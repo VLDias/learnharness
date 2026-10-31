@@ -659,3 +659,27 @@ body {
 		transition: none !important;
 	}
 }
+
+/* Viewport-height fallback (mobile app WebView): if `dvh` is unsupported the
+ * whole flex column collapses and the transcript renders zero-height. The
+ * second declaration is ignored by engines that lack dvh, leaving 100vh. */
+.h-dvh {
+	height: 100vh;
+	height: 100dvh;
+	/* Measured px, set by <AppHeight/>: the Android WebView parses dvh but
+	   computes it as 0, collapsing every `h-full` inside the shell. */
+	height: var(--lh-app-h, 100dvh);
+}
+.min-h-dvh {
+	min-height: 100vh;
+	min-height: 100dvh;
+	min-height: var(--lh-app-h, 100dvh);
+}
+
+/* The height chain starts at the document: a WebView that resolves `100%` but
+ * not `dvh` needs an explicit root height, or every `h-full` below collapses
+ * to zero (empty transcript + zero-height composer). */
+html,
+body {
+	height: 100%;
+}

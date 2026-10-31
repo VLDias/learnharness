@@ -672,7 +672,7 @@ function SessionsSidebar() {
 			)}
 			aria-hidden={!open}
 		>
-			<div className="flex h-full w-72 flex-col border-r bg-background">
+			<div className="flex h-full w-72 flex-col border-r bg-background max-md:pb-[env(safe-area-inset-bottom)]">
 				{/* LH wordmark — the owner's header; close toggle sits at the edge.
 				    Merged chrome (2026-09-17): in Electron this band is the
 				    window's drag surface and starts after the traffic lights
@@ -990,6 +990,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 	return (
 		<SettingsDialogProvider>
 			<SessionsSidebar />
+			<FilePathDropZone className="relative min-w-0 flex-1">{children}</FilePathDropZone>
+			{/* Phone drawer backdrop, AFTER the page so it paints on top; the
+			    drawer itself carries z-50 and stays above it. Sitting after
+			    the drop zone also keeps the shell's documented shape
+			    (SessionsSidebar → FilePathDropZone → children). */}
 			{mobile && open && (
 				<button
 					type="button"
@@ -999,9 +1004,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 					className="fixed inset-0 z-40 bg-background/70 backdrop-blur-sm"
 				/>
 			)}
-			{/* 0.4.0 wraps the page in the file-path drop zone; the mobile
-			    drawer/backdrop rides outside it so it overlays everything. */}
-			<FilePathDropZone className="relative min-w-0 flex-1">{children}</FilePathDropZone>
 			{/* The single document-level keydown listener (keyboard wave A) —
 			    after the content in the tree, but it's window-level so order only
 			    matters for the events it dispatches, never for DOM priority. */}
