@@ -4,6 +4,7 @@ import { ServerEventsProvider } from "@/components/server-events";
 import { AppearanceProvider } from "@/components/settings/appearance";
 import UpdateBanner from "@/components/update-banner";
 import { SessionGuard } from "@/components/auth/session-guard";
+import { AppHeight } from "@/components/app-height";
 
 /**
  * The signed-in application shell (mobile-web route group, 2026-10-29):
@@ -16,6 +17,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 		<>
 			{/* Web sessions: bounce to /login on an expired/revoked cookie. */}
 			<SessionGuard />
+			{/* Viewport height in px: the WebView miscomputes dvh (2026-10-30). */}
+			<AppHeight />
 			{/* The notification channel rides OUTSIDE everything: sidebar, dock,
 				and pages all subscribe as the polls retire (push S3, 2026-10-02). */}
 			<ServerEventsProvider>
